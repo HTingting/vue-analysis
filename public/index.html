@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div id="app" class="appClass appClass2 appClass3 appClass4">
+    <p>Hello world</p>
+</div>
+<script src="/dist/umd/vue.js"></script>
+<script>
+    let vm = new Vue({
+        el:'#app',
+        data(){
+            return {
+                msg:'Hello,Harry',
+                nameArray:[{name:'Harry'},{name:'jecci'}]
+            }
+        },
+        created(){
+
+        }
+    });
+
+</script>
+</body>
+</html>
+
