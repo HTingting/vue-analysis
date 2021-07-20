@@ -7,7 +7,14 @@ class Observer {
     constructor(value) {
 
         /*value.__ob__ = this;*/ // todo 这样会导致死循环,改用下面的方法
-        def(value,'__ob__', this);
+        /**
+         * Object.defineProperty(value,'__ob__', {
+         *     enumrable: false,  //不能被枚举，不能被循环出来
+         *     configurable: false,
+         *     value: this
+         * })
+         */
+        def(value,'__ob__', this); //判断一个对象是否被观测过，看他有没有__ob__ 这个属性
 
         // vue如果数据的层次过多，需要递归去解析对象中的属性，依次增加set和get方法
         if(Array.isArray(value)){
@@ -16,6 +23,7 @@ class Observer {
             // 如果数组里房的是对象我在监控
             this.observerArray(value);
         }else{
+            // 使用defineProperty 重新定义属性
             this.walk(value)
         }
     }
@@ -27,7 +35,7 @@ class Observer {
     }
 
     walk(data) {
-        let keys = Object.keys(data);  // [name,age,address]
+        let keys = Object.keys(data);  // [name,age,address] 拿到的是最外层的
         keys.forEach((key) => {
             defineReactive(data, key, data[key]); // 定义响应式数据
         })
@@ -62,6 +70,9 @@ export function observer (data) {
     let isObj = isObject(data);
     if(!isObj) {
         return
+    }
+    if(data.__ob__){
+        return data;
     }
     return new Observer(data);  //用来观测数据
 }

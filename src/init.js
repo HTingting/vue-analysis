@@ -9,7 +9,7 @@ export function initMixin(Vue){
         // 数据的劫持
         const vm = this;  //vue 中使用this.$options指代的就是用户传递的属性
         //vm.$options = options;
-        //注意这里construect，将用户传递和全局的合并
+        //注意这里construct，将用户传递和全局的合并
         vm.$options = mergeOptions(vm.constructor.options,options);
 
         //
