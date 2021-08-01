@@ -5,6 +5,7 @@ export function lifecycleMixin(Vue) {
         //创建一个真实节点
         console.log('_update拿到虚拟节点',vnode);
         const vm = this;
+        // 拿到最新的$el
         vm.$el = patch(vm.$el, vnode);
     }
 }
@@ -23,16 +24,18 @@ export function mountComponent (vm,el) {
         vm._update(vm._render());
     }
     // 渲染watcher 每个组件都有一个watcher  vm.$watch(()=>{})
-    new Watcher(vm, updateComponent, ()=>{}, true);  //true表示他是一个渲染watcher
+    new Watcher(vm, updateComponent, ()=>{
+        callHook(vm,'beforeUpdate')
+    }, true);  //true表示他是一个渲染watcher
 
     callHook(vm,'mounted');
 }
 
 export function callHook(vm,hook) {
-    const handlers = vm.$options[hook];  // [fn,fn]
+    const handlers = vm.$options[hook];  // [fn,fn]  vm.$options.created = [fn1,fn2,fn3]
     if(handlers) {  //找到对应的钩子依次执行
         for(let i = 0; i<handlers.length; i++) {
-            handlers[i].call(vm);
+            handlers[i].call(vm);  // 生命周期中的this，都是当前实例。
         }
     }
 }

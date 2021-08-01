@@ -23,6 +23,10 @@ function createElm(vnode) { //根据虚拟节点创建真实的节点
     //是标签就创建标签
     if(typeof tag === 'string'){
         vnode.el = document.createElement(tag);
+
+        //【更新属性】 只有元素才有属性
+        updatProperties(vnode);
+
         children.forEach(child => {
             return vnode.el.appendChild(createElm(child));
         })
@@ -44,7 +48,7 @@ function updatProperties(vnode) {
                 el.style[styleName] = newProps.style[styleName];
             }
         }else if(key === 'class'){
-            el.className = newProps.class
+            el.className = el.class
         }else {
             el.setAttribute(key,newProps[key]);
         }

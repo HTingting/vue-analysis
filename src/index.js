@@ -9,9 +9,9 @@ function Vue(options){
     this._init(options);
 }
 // 通过引入文件的方式 【给vue原型上添加方法】
-initMixin(Vue);
-renderMixin(Vue);
-lifecycleMixin(Vue);
+initMixin(Vue);  // init方法
+renderMixin(Vue);  // _update
+lifecycleMixin(Vue); // _render
 
 // 初始化全局方法
 initGlobalAPI(Vue);

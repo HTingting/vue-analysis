@@ -41,6 +41,7 @@ export function initMixin(Vue){
                 template = el.outerHTML;
             }
             // 我们需要将template转换成render方法， vue2.0 虚拟dom
+            // 1. 处理模板变成ast树 2.标记静态节点 3.codegen => return 4.new Function + with (render函数)
             const render = compileToFunction(template);
             options.render = render;
         }

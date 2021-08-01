@@ -33,7 +33,8 @@ function gen(node){
         // 元素标签
         return generate(node);
     }else{
-        let text = node.text; //   <div>a {{  name  }} b{{age}} c</div>
+        // 文本，需要考虑到大括号的情况
+        let text = node.text; //匹配文本   <div>a {{  name  }} b{{age}} c</div>
         let tokens = [];
         let match,index;
         // 每次的偏移量 buffer.split()

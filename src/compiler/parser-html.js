@@ -1,8 +1,10 @@
-const ncname = `[a-zA-Z_][\\-\\.0-9_a-zA-Z]*`; // abc-aaa
-const qnameCapture = `((?:${ncname}\\:)?${ncname})`; // <aaa:asdads>
+const ncname = `[a-zA-Z_][\\-\\.0-9_a-zA-Z]*`; // abc-aaa 匹配标签名
+// ?: 匹配不捕获
+const qnameCapture = `((?:${ncname}\\:)?${ncname})`; // aaa:asdads
 const startTagOpen = new RegExp(`^<${qnameCapture}`); // 标签开头的正则 捕获的内容是标签名
 const endTag = new RegExp(`^<\\/${qnameCapture}[^>]*>`); // 匹配标签结尾的 </div>
-const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/; // 匹配属性的
+// 匹配属性的  aaa="aaa" bbb='b' ccc=c
+const attribute = /^\s*([^\s"'<>\/=]+)(?:\s*(=)\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<>`]+)))?/;
 const startTagClose = /^\s*(\/?)>/; // 匹配标签结束的 >  <div>
 const defaultTagRE = /\{\{((?:.|\r?\n)+?)\}\}/g
 
@@ -39,6 +41,7 @@ function chars(text) {
         })
     }
 }
+// [div,p]  如果p操作pop之后，currentParent还有值，那么p就为currentParent的子元素
 function end(tagName) {
     let element = stack.pop(); // 拿到的是ast对象
     // 我要标识当前这个p是属于这个div的儿子的
@@ -79,6 +82,7 @@ export function parseHTML(html) {
         html = html.substring(n);
     }
     function parseStartTag() {
+        // 说明是一个开始标签
         let start = html.match(startTagOpen);
         if (start) {
             const match = {
